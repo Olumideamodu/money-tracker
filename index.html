@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Money Tracker - Personal Finance & Expense Tracker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- App Container -->
+  <div class="app-container">
+    
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-brand">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="5" width="20" height="14" rx="2" />
+            <line x1="2" y1="10" x2="22" y2="10" />
+            <circle cx="16" cy="14" r="1.5" />
+          </svg>
+        </div>
+        <div>
+          <h1 class="app-title">Money Tracker</h1>
+          <p class="app-subtitle">Track your personal income & expenses in Naira (₦)</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="export-csv-btn" class="btn btn-outline" title="Export transactions to CSV">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          <span>Export CSV</span>
+        </button>
+        <button id="open-add-modal-btn" class="btn btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+          <span>Add Transaction</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Dashboard Overview Cards -->
+    <section class="dashboard-section" aria-label="Financial Overview">
+      <div class="dashboard-grid">
+        
+        <!-- Total Balance Card -->
+        <div class="metric-card balance-card">
+          <div class="metric-header">
+            <span class="metric-label">Total Balance</span>
+            <div class="metric-icon balance-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8" />
+                <path d="M12 6v2m0 8v2" />
+              </svg>
+            </div>
+          </div>
+          <div class="metric-value" id="total-balance">₦0.00</div>
+          <div class="metric-footer" id="balance-status-text">Net savings available</div>
+        </div>
+
+        <!-- Total Income Card -->
+        <div class="metric-card income-card">
+          <div class="metric-header">
+            <span class="metric-label">Total Income</span>
+            <div class="metric-icon income-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="19" x2="12" y2="5" />
+                <polyline points="5 12 12 5 19 12" />
+              </svg>
+            </div>
+          </div>
+          <div class="metric-value income-value" id="total-income">₦0.00</div>
+          <div class="metric-footer" id="income-count-text">0 incoming payments</div>
+        </div>
+
+        <!-- Total Expenses Card -->
+        <div class="metric-card expense-card">
+          <div class="metric-header">
+            <span class="metric-label">Total Expenses</span>
+            <div class="metric-icon expense-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <polyline points="19 12 12 19 5 12" />
+              </svg>
+            </div>
+          </div>
+          <div class="metric-value expense-value" id="total-expenses">₦0.00</div>
+          <div class="metric-footer" id="expense-count-text">0 spending records</div>
+        </div>
+
+        <!-- Transaction Count Card -->
+        <div class="metric-card count-card">
+          <div class="metric-header">
+            <span class="metric-label">Total Transactions</span>
+            <div class="metric-icon count-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="16" y1="13" x2="8" y2="13" />
+                <line x1="16" y1="17" x2="8" y2="17" />
+                <polyline points="10 9 9 9 8 9" />
+              </svg>
+            </div>
+          </div>
+          <div class="metric-value" id="transaction-count">0</div>
+          <div class="metric-footer" id="history-period-text">All recorded entries</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Monthly Overview Section -->
+    <section class="monthly-section" aria-label="Monthly Breakdown">
+      <div class="card monthly-card">
+        <div class="monthly-header">
+          <div class="monthly-title-group">
+            <div class="section-badge">Monthly Review</div>
+            <h2 class="section-title">Monthly Financial Overview</h2>
+            <p class="section-subtitle">Select a month to inspect income, expenses, and savings balance</p>
+          </div>
+          
+          <!-- Month Selector Navigator -->
+          <div class="month-selector-controls">
+            <button id="prev-month-btn" class="icon-btn" title="Previous Month" aria-label="Previous Month">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+            </button>
+            
+            <div class="month-input-wrapper">
+              <input type="month" id="month-picker" class="month-input" aria-label="Select month and year">
+            </div>
+
+            <button id="next-month-btn" class="icon-btn" title="Next Month" aria-label="Next Month">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </button>
+            
+            <button id="current-month-btn" class="btn btn-outline btn-sm">This Month</button>
+          </div>
+        </div>
+
+        <div class="monthly-metrics-grid">
+          <!-- Month Income -->
+          <div class="monthly-metric-item monthly-income-item">
+            <span class="monthly-metric-label">Month Income</span>
+            <span class="monthly-metric-value" id="monthly-income">₦0.00</span>
+            <span class="monthly-metric-sub" id="monthly-income-ratio">0% of annual</span>
+          </div>
+
+          <!-- Month Expenses -->
+          <div class="monthly-metric-item monthly-expense-item">
+            <span class="monthly-metric-label">Month Expenses</span>
+            <span class="monthly-metric-value" id="monthly-expenses">₦0.00</span>
+            <span class="monthly-metric-sub" id="monthly-expense-ratio">0% of income</span>
+          </div>
+
+          <!-- Month Remaining Balance -->
+          <div class="monthly-metric-item monthly-balance-item">
+            <span class="monthly-metric-label">Remaining Balance</span>
+            <span class="monthly-metric-value" id="monthly-balance">₦0.00</span>
+            <span class="monthly-metric-sub" id="monthly-savings-status">Net for this month</span>
+          </div>
+        </div>
+
+        <!-- Monthly Spending Ratio Bar -->
+        <div class="progress-bar-container">
+          <div class="progress-bar-labels">
+            <span id="progress-bar-label">Month Budget Utilization</span>
+            <span id="progress-bar-percentage">0% spent</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="monthly-progress-fill" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <!-- Monthly Category Breakdown -->
+        <div id="monthly-category-breakdown" class="monthly-breakdown-section">
+          <div class="breakdown-header">
+            <span class="breakdown-title">Monthly Expense Breakdown by Category</span>
+            <span class="breakdown-total" id="breakdown-expense-total">Total: ₦0.00</span>
+          </div>
+          <div id="category-bars-list" class="category-bars-list">
+            <!-- Populated dynamically via JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Content Area: Search, Filters & Transactions List -->
+    <main class="content-section">
+      
+      <!-- Filter and Search Toolbar -->
+      <section class="card filter-card" aria-label="Search and Filter Transactions">
+        <div class="filter-header-bar">
+          <h2 class="filter-title">Filter & Search</h2>
+          <button id="reset-filters-btn" class="btn btn-text btn-sm" title="Clear all filters">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+              <path d="M3 3v5h5" />
+            </svg>
+            Reset Filters
+          </button>
+        </div>
+
+        <div class="filter-grid">
+          <!-- Search Bar -->
+          <div class="filter-group filter-search">
+            <label for="search-input" class="filter-label">Search</label>
+            <div class="input-with-icon">
+              <span class="input-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+              </span>
+              <input type="text" id="search-input" class="form-control" placeholder="Search by title, description, or notes..." autocomplete="off">
+            </div>
+          </div>
+
+          <!-- Type Filter Tabs -->
+          <div class="filter-group filter-type">
+            <span class="filter-label">Transaction Type</span>
+            <div class="type-pill-selector" role="group" aria-label="Filter by transaction type">
+              <button type="button" class="type-pill active" data-type="all">All</button>
+              <button type="button" class="type-pill" data-type="income">Income</button>
+              <button type="button" class="type-pill" data-type="expense">Expenses</button>
+            </div>
+          </div>
+
+          <!-- Category Filter -->
+          <div class="filter-group filter-category">
+            <label for="category-filter" class="filter-label">Category</label>
+            <select id="category-filter" class="form-control">
+              <option value="all">All Categories</option>
+              <!-- Populated dynamically via JavaScript -->
+            </select>
+          </div>
+
+          <!-- Date Range Filter -->
+          <div class="filter-group filter-dates">
+            <div class="date-range-fields">
+              <div class="date-field">
+                <label for="date-from-filter" class="filter-label">From Date</label>
+                <input type="date" id="date-from-filter" class="form-control">
+              </div>
+              <div class="date-field">
+                <label for="date-to-filter" class="filter-label">To Date</label>
+                <input type="date" id="date-to-filter" class="form-control">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter Status Bar -->
+        <div class="filter-status-bar" id="filter-status-bar">
+          <span id="filter-results-count">Showing all transactions</span>
+        </div>
+      </section>
+
+      <!-- Transactions List Section -->
+      <section class="card transactions-card" aria-label="Transactions List">
+        <div class="transactions-header">
+          <div class="transactions-title-group">
+            <h2 class="card-title">Transaction History</h2>
+            <span class="badge" id="list-count-badge">0 records</span>
+          </div>
+          
+          <div class="transactions-actions">
+            <button id="quick-add-btn" class="btn btn-secondary btn-sm">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+              <span>New Transaction</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Transactions Container -->
+        <div class="transactions-list-wrapper">
+          <div id="transactions-list" class="transactions-list" role="list">
+            <!-- Dynamic Transaction Items Inserted Here -->
+          </div>
+
+          <!-- Empty State (No Transactions at all) -->
+          <div id="empty-state" class="empty-state hidden">
+            <div class="empty-state-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" />
+                <path d="M3 5v14a2 2 0 0 0 2 2h16v-5" />
+                <path d="M18 12a2 2 0 0 0 0 4h4v-4z" />
+              </svg>
+            </div>
+            <h3 class="empty-state-title">No transactions recorded yet</h3>
+            <p class="empty-state-desc">Start taking control of your personal finances by logging your first income or expense transaction.</p>
+            <div class="empty-state-buttons">
+              <button id="empty-add-btn" class="btn btn-primary">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                Record First Transaction
+              </button>
+              <button id="load-sample-btn" class="btn btn-outline">
+                Load Sample Data
+              </button>
+            </div>
+          </div>
+
+          <!-- Filter Empty State (When filters match nothing) -->
+          <div id="filter-empty-state" class="empty-state hidden">
+            <div class="empty-state-icon">
+              <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                <line x1="8" y1="11" x2="14" y2="11" />
+              </svg>
+            </div>
+            <h3 class="empty-state-title">No matching transactions found</h3>
+            <p class="empty-state-desc">We couldn't find any transactions matching your current filters or search term.</p>
+            <button id="clear-filters-btn" class="btn btn-outline">
+              Clear All Filters
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>Personal Money Tracker &bull; Stored locally in your browser &bull; 100% offline &bull; Currency in Nigerian Naira (₦)</p>
+    </footer>
+
+  </div>
+
+  <!-- Transaction Modal (Add / Edit) -->
+  <div id="transaction-modal" class="modal-overlay hidden" aria-hidden="true" role="dialog" aria-labelledby="modal-title">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="modal-title" class="modal-title">Add Transaction</h3>
+        <button id="close-modal-btn" class="modal-close-btn" aria-label="Close dialog">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+
+      <form id="transaction-form" class="modal-form" novalidate>
+        <!-- Hidden input for edit mode -->
+        <input type="hidden" id="edit-transaction-id" value="">
+
+        <!-- Transaction Type Selection -->
+        <div class="form-group">
+          <label class="form-label">Transaction Type <span class="required">*</span></label>
+          <div class="type-toggle-group">
+            <label class="type-toggle-option type-income">
+              <input type="radio" name="form-type" id="type-income" value="income" checked>
+              <span class="type-toggle-box">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="19" x2="12" y2="5" />
+                  <polyline points="5 12 12 5 19 12" />
+                </svg>
+                Income
+              </span>
+            </label>
+
+            <label class="type-toggle-option type-expense">
+              <input type="radio" name="form-type" id="type-expense" value="expense">
+              <span class="type-toggle-box">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <polyline points="19 12 12 19 5 12" />
+                </svg>
+                Expense
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Title -->
+        <div class="form-group">
+          <label for="form-title" class="form-label">Title or Description <span class="required">*</span></label>
+          <input type="text" id="form-title" class="form-control" placeholder="e.g. Monthly Salary, Grocery Shopping, Electric bill" maxlength="100" required>
+          <span class="field-error" id="title-error"></span>
+        </div>
+
+        <!-- Amount & Date Grid -->
+        <div class="form-row">
+          <!-- Amount -->
+          <div class="form-group flex-1">
+            <label for="form-amount" class="form-label">Amount (₦) <span class="required">*</span></label>
+            <div class="amount-input-group">
+              <span class="currency-prefix">₦</span>
+              <input type="number" id="form-amount" class="form-control amount-input" placeholder="0.00" min="0.01" step="any" required>
+            </div>
+            <span class="field-error" id="amount-error"></span>
+          </div>
+
+          <!-- Date -->
+          <div class="form-group flex-1">
+            <div class="label-with-shortcuts">
+              <label for="form-date" class="form-label">Date <span class="required">*</span></label>
+              <div class="date-shortcuts">
+                <button type="button" id="date-today-btn" class="text-shortcut-btn">Today</button>
+                <button type="button" id="date-yesterday-btn" class="text-shortcut-btn">Yesterday</button>
+              </div>
+            </div>
+            <input type="date" id="form-date" class="form-control" required>
+            <span class="field-error" id="date-error"></span>
+          </div>
+        </div>
+
+        <!-- Category -->
+        <div class="form-group">
+          <label for="form-category" class="form-label">Category <span class="required">*</span></label>
+          <select id="form-category" class="form-control" required>
+            <!-- Populated dynamically based on Income or Expense -->
+          </select>
+          <span class="field-error" id="category-error"></span>
+        </div>
+
+        <!-- Optional Notes -->
+        <div class="form-group">
+          <label for="form-notes" class="form-label">Notes <span class="optional">(optional)</span></label>
+          <textarea id="form-notes" class="form-control" rows="3" placeholder="Add any details, receipt info or notes here..."></textarea>
+        </div>
+
+        <!-- Modal Actions -->
+        <div class="modal-actions">
+          <button type="button" id="cancel-modal-btn" class="btn btn-secondary">Cancel</button>
+          <button type="submit" id="save-transaction-btn" class="btn btn-primary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+              <polyline points="17 21 17 13 7 13 7 21" />
+              <polyline points="7 3 7 8 15 8" />
+            </svg>
+            <span id="save-btn-text">Save Transaction</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div id="delete-modal" class="modal-overlay hidden" aria-hidden="true" role="dialog" aria-labelledby="delete-dialog-title">
+    <div class="modal-dialog modal-dialog-sm">
+      <div class="delete-icon-wrapper">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="3 6 5 6 21 6" />
+          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+          <line x1="10" y1="11" x2="10" y2="17" />
+          <line x1="14" y1="11" x2="14" y2="17" />
+        </svg>
+      </div>
+
+      <h3 id="delete-dialog-title" class="delete-dialog-title">Delete Transaction?</h3>
+      <p class="delete-dialog-message">
+        Are you sure you want to delete <strong id="delete-item-title">this transaction</strong> of <span id="delete-item-amount" class="text-bold">₦0.00</span>? This action cannot be reversed.
+      </p>
+
+      <div class="modal-actions delete-actions">
+        <button type="button" id="cancel-delete-btn" class="btn btn-secondary">Cancel</button>
+        <button type="button" id="confirm-delete-btn" class="btn btn-danger">Yes, Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- Application Script -->
+  <script src="script.js"></script>
+</body>
+</html>
+
